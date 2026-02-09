@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ParkhausMAUI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+b725beb2a94227faeb0066bda6e16b7e5f568265")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+3ef9e1b983af2566843962b68213c1bbb4b04029")]
 [assembly: System.Reflection.AssemblyProductAttribute("ParkhausMAUI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ParkhausMAUI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
