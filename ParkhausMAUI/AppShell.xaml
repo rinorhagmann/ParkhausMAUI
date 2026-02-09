@@ -7,7 +7,7 @@
     Title="ParkhausMAUI">
 
     <ShellContent
-        Title="Home"
+        Title="ParkSmart"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 

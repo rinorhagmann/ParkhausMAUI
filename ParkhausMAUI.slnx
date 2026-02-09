@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="ParkhausMAUI/ParkhausMAUI.csproj" />
+  <Project Path="ParkhausMAUI/ParkhausMAUI.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>

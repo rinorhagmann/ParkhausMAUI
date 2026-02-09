@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NjrHHIzysV8=",
+  "dgSpecHash": "7vo6iB71Y4k=",
   "success": true,
-  "projectFilePath": "C:\\Users\\rinor\\OneDrive - DIG-IT - eduBS\\IMS I 3b\\INF-I 3b-Pr-St\\St\\M335\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj",
+  "projectFilePath": "C:\\Users\\rinor\\Documents\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rinor\\.nuget\\packages\\googlegson\\2.13.1.1\\googlegson.2.13.1.1.nupkg.sha512",
     "C:\\Users\\rinor\\.nuget\\packages\\microsoft.extensions.configuration\\10.0.0\\microsoft.extensions.configuration.10.0.0.nupkg.sha512",

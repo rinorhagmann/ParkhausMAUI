@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rinor\\OneDrive - DIG-IT - eduBS\\IMS I 3b\\INF-I 3b-Pr-St\\St\\M335\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj": {}
+    "C:\\Users\\rinor\\Documents\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rinor\\OneDrive - DIG-IT - eduBS\\IMS I 3b\\INF-I 3b-Pr-St\\St\\M335\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj": {
+    "C:\\Users\\rinor\\Documents\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rinor\\OneDrive - DIG-IT - eduBS\\IMS I 3b\\INF-I 3b-Pr-St\\St\\M335\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj",
+        "projectUniqueName": "C:\\Users\\rinor\\Documents\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj",
         "projectName": "ParkhausMAUI",
-        "projectPath": "C:\\Users\\rinor\\OneDrive - DIG-IT - eduBS\\IMS I 3b\\INF-I 3b-Pr-St\\St\\M335\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj",
+        "projectPath": "C:\\Users\\rinor\\Documents\\ParkhausMAUI\\ParkhausMAUI\\ParkhausMAUI.csproj",
         "packagesPath": "C:\\Users\\rinor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rinor\\OneDrive - DIG-IT - eduBS\\IMS I 3b\\INF-I 3b-Pr-St\\St\\M335\\ParkhausMAUI\\ParkhausMAUI\\obj\\",
+        "outputPath": "C:\\Users\\rinor\\Documents\\ParkhausMAUI\\ParkhausMAUI\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
