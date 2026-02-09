@@ -11,4 +11,18 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
-</Shell>
+    <TabBar>
+        <Tab Title="Parkhäuser" Icon="parking_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+    
+        <Tab Title="Aktuell" Icon="timer_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate local:ActiveParkingPage}" />
+        </Tab>
+    
+        <Tab Title="Verlauf" Icon="history_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate local:HistoryPage}" />
+        </Tab>
+    </TabBar>
+    
+</Shell> 
