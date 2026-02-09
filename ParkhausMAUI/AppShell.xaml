@@ -3,26 +3,21 @@
     x:Class="ParkhausMAUI.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:ParkhausMAUI"
+    xmlns:views="clr-namespace:ParkhausMAUI.Views"
     Title="ParkhausMAUI">
 
-    <ShellContent
-        Title="ParkSmart"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
     <TabBar>
-        <Tab Title="Parkhäuser" Icon="parking_icon.png">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        <Tab Title="Parkhäuser">
+            <ShellContent ContentTemplate="{DataTemplate views:MainPage}" Route="MainPage" />
         </Tab>
-    
-        <Tab Title="Aktuell" Icon="timer_icon.png">
-            <ShellContent ContentTemplate="{DataTemplate local:ActiveParkingPage}" />
+
+        <Tab Title="Aktuell">
+            <ShellContent ContentTemplate="{DataTemplate views:ActiveParkingPage}" Route="ActiveParkingPage" />
         </Tab>
-    
-        <Tab Title="Verlauf" Icon="history_icon.png">
-            <ShellContent ContentTemplate="{DataTemplate local:HistoryPage}" />
+
+        <Tab Title="Verlauf">
+            <ShellContent ContentTemplate="{DataTemplate views:HistoryPage}" Route="HistoryPage" />
         </Tab>
     </TabBar>
-    
-</Shell> 
+
+</Shell>

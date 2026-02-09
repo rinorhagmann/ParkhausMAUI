@@ -1,4 +1,4 @@
-namespace ParkhausMAUI;
+namespace ParkhausMAUI.Views;
 
 public partial class HistoryPage : ContentPage
 {
