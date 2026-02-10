@@ -20,9 +20,13 @@ namespace ParkhausMAUI
 
             builder.Services.AddSingleton<ParkingService>(); // Anbindung Service
 
-            builder.Services.AddTransient<MainViewModel>(); // Anbindung ViewModel
+            builder.Services.AddTransient<MainViewModel>(); // Anbindung ViewModel MainPage
 
-            builder.Services.AddTransient<MainPage>(); // Anbindung View
+            builder.Services.AddTransient<MainPage>(); // Anbindung View MainPage
+
+            builder.Services.AddTransient<ActiveParkingViewModel>(); // Anbindung ViewModel ActiveParkingPage
+
+            builder.Services.AddTransient<ActiveParkingPage>(); // Anbindung View ActiveParkingPage
 
 #if DEBUG
             builder.Logging.AddDebug();

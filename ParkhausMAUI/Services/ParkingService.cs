@@ -74,5 +74,40 @@ namespace ParkhausMAUI.Services
         }
 
         public List<ParkingLocation> GetAvailableParkings() => _data.AvailableParkings;
+
+        public ParkingSession GetActiveSession()
+        {
+            return _data.CurrentSession;
+        }
+
+        public void StartParking(ParkingLocation location)
+        {
+            // Session starten
+            _data.CurrentSession = new ParkingSession
+            {
+                ParkhausName = location.Name,
+                StartTime = DateTime.Now,
+                EndTime = null,
+                TotalCost = 0
+            };
+
+            SaveToFile();
+        }
+
+        public void StopParking()
+        {
+            if (_data.CurrentSession == null) return;
+
+            // Session beenden
+            _data.CurrentSession.EndTime = DateTime.Now;
+
+            // In den Parkverlauf verschieben
+            _data.History.Add(_data.CurrentSession);
+
+            // Aktive Session leeren
+            _data.CurrentSession = null;
+
+            SaveToFile();
+        }
     }
 }
