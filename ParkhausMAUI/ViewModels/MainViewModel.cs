@@ -16,17 +16,13 @@ namespace ParkhausMAUI.ViewModels
         public MainViewModel(ParkingService parkingService)
         {
             _parkingService = parkingService;
-
-            Parkings = new ObservableCollection<ParkingLocation>(_parkingService.GetLocations());
+            LoadParkings();
         }
 
-        [RelayCommand]
-        private async Task SelectParking(ParkingLocation location)
+        private void LoadParkings()
         {
-            if (location == null) return;
-
-            
-            await Shell.Current.DisplayAlert("Auswahl", $"Du hast {location.Name} gewählt.", "OK");
+            var list = _parkingService.GetAvailableParkings();
+            Parkings = new ObservableCollection<ParkingLocation>(list);
         }
     }
 }

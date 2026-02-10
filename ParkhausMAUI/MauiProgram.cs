@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using ParkhausMAUI.Views;
+using ParkhausMAUI.ViewModels;
+using ParkhausMAUI.Services;
 
 namespace ParkhausMAUI
 {
@@ -15,8 +18,14 @@ namespace ParkhausMAUI
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.AddSingleton<ParkingService>(); // Anbindung Service
+
+            builder.Services.AddTransient<MainViewModel>(); // Anbindung ViewModel
+
+            builder.Services.AddTransient<MainPage>(); // Anbindung View
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

@@ -1,62 +1,78 @@
-﻿using ParkhausMAUI.Models;
-using System.Text.Json;
+﻿using System.Text.Json;
+using ParkhausMAUI.Models;
 
 namespace ParkhausMAUI.Services
 {
     public class ParkingService
     {
-        private string _filePath = Path.Combine(FileSystem.AppDataDirectory, "parking_data.json");
+        private readonly string _filePath = Path.Combine(FileSystem.AppDataDirectory, "parking_basel_v1.json");
         private RootData _data;
 
         public ParkingService()
         {
-            LoadData();
+            InitializeData();
         }
 
-        private void LoadData()
+        private void InitializeData()
         {
-            if (!File.Exists(_filePath))
+            try
             {
-                // Falls JSON-Datei nicht gefunden diese Mock Daten anzeigen
-                _data = new RootData
+                if (!File.Exists(_filePath))
                 {
-                    AvailableParkings = new List<ParkingLocation> {
-                    new() { Id = 1, Name = "Parkhaus 1", HourlyRate = 2.50 },
-                    new() { Id = 2, Name = "Parkhaus 2", HourlyRate = 4.00 }
+                    // JSON-Daten mit 25 Basler Parkhäusern
+                    _data = new RootData
+                    {
+                        AvailableParkings = new List<ParkingLocation>
+                        {
+                            new() { Id = 1, Name = "Parkhaus Centralbahnparking", HourlyRate = 4.00 },
+                            new() { Id = 2, Name = "Parkhaus Elisabethen", HourlyRate = 3.00 },
+                            new() { Id = 3, Name = "Parkhaus Steinen", HourlyRate = 3.00 },
+                            new() { Id = 4, Name = "Parkhaus City", HourlyRate = 3.00 },
+                            new() { Id = 5, Name = "Parkhaus Storchen", HourlyRate = 4.50 },
+                            new() { Id = 6, Name = "Parkhaus Badischer Bahnhof", HourlyRate = 2.50 },
+                            new() { Id = 7, Name = "Parkhaus Messe Basel", HourlyRate = 3.50 },
+                            new() { Id = 8, Name = "Parkhaus Rebgasse", HourlyRate = 2.50 },
+                            new() { Id = 9, Name = "Parkhaus Claramatte", HourlyRate = 2.50 },
+                            new() { Id = 10, Name = "Parkhaus Europe", HourlyRate = 3.50 },
+                            new() { Id = 11, Name = "Parkhaus Post Basel", HourlyRate = 3.50 },
+                            new() { Id = 12, Name = "Parkhaus Anfos", HourlyRate = 3.50 },
+                            new() { Id = 13, Name = "Parkhaus Aeschen", HourlyRate = 3.50 },
+                            new() { Id = 14, Name = "Parkhaus Bahnhof Süd", HourlyRate = 3.50 },
+                            new() { Id = 15, Name = "Parkhaus St. Jakob", HourlyRate = 2.00 },
+                            new() { Id = 16, Name = "Parkhaus Kunstmuseum", HourlyRate = 4.00 },
+                            new() { Id = 17, Name = "Parkhaus Clarahuus", HourlyRate = 3.00 },
+                            new() { Id = 18, Name = "Parkhaus ELYS", HourlyRate = 2.50 },
+                            new() { Id = 19, Name = "Parkhaus Theater", HourlyRate = 3.50 },
+                            new() { Id = 20, Name = "Parkhaus Horburg", HourlyRate = 2.00 },
+                            new() { Id = 21, Name = "Parkhaus U70", HourlyRate = 2.50 },
+                            new() { Id = 22, Name = "Parkhaus Universitätsspital (UKBB)", HourlyRate = 3.00 },
+                            new() { Id = 23, Name = "Parkhaus Grosspeter", HourlyRate = 3.00 },
+                            new() { Id = 24, Name = "Parkhaus St. Jakobshalle", HourlyRate = 1.50 },
+                            new() { Id = 25, Name = "Parkhaus City (Schanzenstrasse)", HourlyRate = 3.00 }
+                        },
+                        History = new List<ParkingSession>()
+                    };
+                    SaveToFile();
                 }
-                };
-                SaveData();
+                else
+                {
+                    var json = File.ReadAllText(_filePath);
+                    _data = JsonSerializer.Deserialize<RootData>(json) ?? new RootData();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var json = File.ReadAllText(_filePath);
-                _data = JsonSerializer.Deserialize<RootData>(json);
+                _data = new RootData();
+                System.Diagnostics.Debug.WriteLine($"Fehler beim Laden: {ex.Message}");
             }
         }
 
-        public void SaveData()
+        public void SaveToFile()
         {
-            var json = JsonSerializer.Serialize(_data);
+            var json = JsonSerializer.Serialize(_data, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(_filePath, json);
         }
 
-        // Zugriffsmethoden für die ViewModels
-        public List<ParkingLocation> GetLocations() => _data.AvailableParkings;
-        public List<ParkingSession> GetHistory() => _data.History;
-        public ParkingSession GetActiveSession() => _data.CurrentSession;
-
-        // Startet einen neuen Parkvorgang
-        public void StartParking(ParkingLocation location)
-        {
-            if (_data.CurrentSession != null) throw new Exception("Bereits ein Parkvorgang aktiv!");
-
-            _data.CurrentSession = new ParkingSession
-            {
-                ParkhausName = location.Name,
-                StartTime = DateTime.Now
-            };
-            SaveData();
-        }
+        public List<ParkingLocation> GetAvailableParkings() => _data.AvailableParkings;
     }
-
 }
