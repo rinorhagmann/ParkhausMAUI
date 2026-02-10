@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using ParkhausMAUI.Models;
 using ParkhausMAUI.Services;
+using System.Collections.ObjectModel;
 
 namespace ParkhausMAUI.ViewModels
 {
@@ -19,24 +20,36 @@ namespace ParkhausMAUI.ViewModels
         [ObservableProperty]
         private string currentCosts;
 
+        [ObservableProperty]
+        private bool isParkingActive;
+
+        [ObservableProperty]
+        private bool isNotParkingActive;
+
         public ActiveParkingViewModel(ParkingService parkingService)
         {
             _parkingService = parkingService;
 
-            // Timer
             _timer = Application.Current.Dispatcher.CreateTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += (s, e) => UpdateUI();
         }
 
-        // Aufrufen, wenn Tab "Aktuell" öffnet
         public void OnAppearing()
         {
             CurrentSession = _parkingService.GetActiveSession();
-            if (CurrentSession != null)
+
+            IsParkingActive = CurrentSession != null;
+            IsNotParkingActive = !IsParkingActive;
+
+            if (IsParkingActive)
             {
                 _timer.Start();
                 UpdateUI();
+            }
+            else
+            {
+                _timer.Stop();
             }
         }
 
@@ -52,7 +65,6 @@ namespace ParkhausMAUI.ViewModels
 
             if (parking != null)
             {
-                // Berechnung Preis
                 double totalHours = duration.TotalHours;
                 double costs = totalHours * parking.HourlyRate;
                 CurrentCosts = $"CHF {costs:F2}";
@@ -62,7 +74,18 @@ namespace ParkhausMAUI.ViewModels
         [RelayCommand]
         private async Task StopParking()
         {
-            await Shell.Current.DisplayAlert("Info", "Parken beendet!", "OK");
+            bool answer = await Shell.Current.DisplayAlert("Beenden", "Möchtest du den Parkvorgang wirklich beenden?", "Ja", "Nein");
+
+            if (answer)
+            {
+                _timer.Stop();
+                _parkingService.StopParking();
+
+                OnAppearing();
+
+                await Shell.Current.DisplayAlert("Info", "Parkvorgang wurde im Verlauf gespeichert.", "OK");
+
+            }
         }
     }
 }

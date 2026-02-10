@@ -1,20 +1,21 @@
-using ParkhausMAUI.ViewModels;
-
 namespace ParkhausMAUI.Views;
 
 public partial class ActiveParkingPage : ContentPage
 {
-	public ActiveParkingPage()
-	{
-		InitializeComponent();
-	}
+    public ActiveParkingPage(ViewModels.ActiveParkingViewModel vm)
+    {
+        InitializeComponent();
+        BindingContext = vm;
+    }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        if (BindingContext is ActiveParkingViewModel vm)
-        {
-            vm.OnAppearing();
-        }
+        (BindingContext as ViewModels.ActiveParkingViewModel)?.OnAppearing();
+    }
+
+    private async void GoToMainPage(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("///MainPage");
     }
 }

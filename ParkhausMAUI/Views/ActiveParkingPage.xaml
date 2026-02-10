@@ -3,16 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:ParkhausMAUI.ViewModels"
              x:Class="ParkhausMAUI.Views.ActiveParkingPage"
-             Title="Aktiver Parkvorgang">
+             x:DataType="viewmodel:ActiveParkingViewModel"
+             Title="Aktueller Status">
 
     <VerticalStackLayout Spacing="25" Padding="30" VerticalOptions="Center">
 
-        <VerticalStackLayout IsVisible="{Binding CurrentSession, Converter={StaticResource NullToBoolConverter}}">
-            <Label Text="Du parkst aktuell im:" HorizontalOptions="Center" TextColor="Gray"/>
+        <VerticalStackLayout IsVisible="{Binding IsParkingActive}" Spacing="15">
+            <Label Text="Sie parken aktuell im:" HorizontalOptions="Center" TextColor="Gray"/>
             <Label Text="{Binding CurrentSession.ParkhausName}" 
-                   FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20"/>
+                   FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10"/>
 
-            <Frame BackgroundColor="#F0F0F0" CornerRadius="100" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center">
+            <Frame BackgroundColor="#F0F0F0" CornerRadius="100" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" HasShadow="False">
                 <VerticalStackLayout VerticalOptions="Center">
                     <Label Text="{Binding ElapsedTime}" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center"/>
                     <Label Text="Dauer" HorizontalOptions="Center" FontSize="12"/>
@@ -20,16 +21,24 @@
             </Frame>
 
             <Label Text="{Binding CurrentCosts}" FontSize="40" TextColor="{StaticResource Primary}" 
-                   FontAttributes="Bold" HorizontalOptions="Center" Margin="0,20"/>
+                   FontAttributes="Bold" HorizontalOptions="Center" Margin="0,10"/>
 
-            <Button Text="Parken beenden" Command="{Binding StopParkingCommand}" 
-                    BackgroundColor="Red" CornerRadius="20" HeightRequest="50"/>
+            <Button Text="Parken beenden" 
+                    Command="{Binding StopParkingCommand}" 
+                    BackgroundColor="Red" 
+                    TextColor="White"
+                    CornerRadius="20" 
+                    HeightRequest="50"
+                    Margin="0,20,0,0"/>
         </VerticalStackLayout>
 
-        <VerticalStackLayout IsVisible="{Binding CurrentSession, Converter={StaticResource InverseNullToBoolConverter}}">
+        <VerticalStackLayout IsVisible="{Binding IsNotParkingActive}" Spacing="20">
             <Label Text="ℹ️" FontSize="60" HorizontalOptions="Center"/>
-            <Label Text="Aktuell ist kein Parkvorgang aktiv." HorizontalOptions="Center" Margin="0,20"/>
-            <Button Text="Jetzt Parkhaus wählen" Clicked="GoToMainPage" HorizontalOptions="Center"/>
+            <Label Text="Aktuell ist kein Parkvorgang aktiv." HorizontalOptions="Center" FontSize="18"/>
+            <Button Text="Jetzt Parkhaus wählen" 
+                    Clicked="GoToMainPage" 
+                    HorizontalOptions="Center"
+                    BackgroundColor="{StaticResource Primary}"/>
         </VerticalStackLayout>
 
     </VerticalStackLayout>
