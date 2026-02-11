@@ -24,5 +24,33 @@ namespace ParkhausMAUI.ViewModels
             var list = _parkingService.GetAvailableParkings();
             Parkings = new ObservableCollection<ParkingLocation>(list);
         }
+
+
+        [RelayCommand]
+        private async Task SelectParking(ParkingLocation location)
+        {
+            if (location == null) return;
+
+            // Prüfung auf aktiven Parkvorgang
+            var activeSession = _parkingService.GetActiveSession();
+            if (activeSession != null)
+            {
+                await Shell.Current.DisplayAlert("Hinweis",
+                    $"Es läuft bereits ein Parkvorgang im {activeSession.ParkhausName}. Bitte beende diesen zuerst.", "OK");
+
+                await Shell.Current.GoToAsync("///ActiveParkingPage");
+                return;
+            }
+
+            // Neuen Parkvorgang starten
+            _parkingService.StartParking(location);
+
+            // Feedback
+            await Shell.Current.DisplayAlert("Parken gestartet",
+                $"Dein Parkvorgang im {location.Name} wurde erfolgreich gestartet.", "OK");
+
+            // Automatisch zur ActiveParkingPage navigieren
+            await Shell.Current.GoToAsync("///ActiveParkingPage");
+        }
     }
 }
