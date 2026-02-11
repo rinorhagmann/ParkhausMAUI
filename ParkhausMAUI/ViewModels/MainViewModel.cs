@@ -42,15 +42,21 @@ namespace ParkhausMAUI.ViewModels
                 return;
             }
 
-            // Neuen Parkvorgang starten
-            _parkingService.StartParking(location);
+            bool confirm = await Shell.Current.DisplayAlert("Parken starten",
+                $"Möchtest du im {location.Name} parken? Der Stundensatz beträgt CHF {location.HourlyRate}.", "Ja", "Nein");
 
-            // Feedback
-            await Shell.Current.DisplayAlert("Parken gestartet",
-                $"Dein Parkvorgang im {location.Name} wurde erfolgreich gestartet.", "OK");
+            if (confirm)
+            {
+                // Neuen Parkvorgang starten
+                _parkingService.StartParking(location);
 
-            // Automatisch zur ActiveParkingPage navigieren
-            await Shell.Current.GoToAsync("///ActiveParkingPage");
+                // Feedback
+                await Shell.Current.DisplayAlert("Parken gestartet",
+                    $"Dein Parkvorgang im {location.Name} wurde erfolgreich gestartet.", "OK");
+
+                // Automatisch zur ActiveParkingPage navigieren
+                await Shell.Current.GoToAsync("///ActiveParkingPage");
+            }
         }
     }
 }

@@ -24,7 +24,9 @@
                             </VerticalStackLayout>
 
                             <Button Grid.Column="1" 
-                                    Text="🗑️" 
+                                    Text="Löschen" 
+                                    TextColor="Red"
+                                    FontAttributes="Bold"
                                     BackgroundColor="Transparent"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HistoryViewModel}}, Path=DeleteEntryCommand}"
                                     CommandParameter="{Binding .}"

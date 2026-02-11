@@ -8,10 +8,10 @@ namespace ParkhausMAUI.ViewModels
 {
     public partial class HistoryViewModel : ObservableObject
     {
-        private readonly ParkingService _parkingService;
+        private readonly ParkingService _parkingService; 
 
         [ObservableProperty]
-        private ObservableCollection<ParkingSession> historyItems;
+        private ObservableCollection<ParkingSession> historyItems; 
 
         public HistoryViewModel(ParkingService parkingService)
         {
@@ -27,14 +27,25 @@ namespace ParkhausMAUI.ViewModels
         }
 
         [RelayCommand]
-        private void DeleteEntry(ParkingSession session)
+        private async Task DeleteEntry(ParkingSession session)
         {
             if (session == null) return;
 
-            // Aus der Liste und dem Service löschen
-            HistoryItems.Remove(session);
-            _parkingService.GetHistory().Remove(session);
-            _parkingService.SaveToFile();
+            // Bestätigungsanforderung
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Löschen bestätigen",
+                $"Möchtest du den Parkvorgang im {session.ParkhausName} wirklich aus dem Verlauf entfernen?",
+                "Löschen",
+                "Abbrechen");
+
+            if (confirm)
+            {
+                HistoryItems.Remove(session);
+
+                _parkingService.GetHistory().Remove(session);
+
+                _parkingService.SaveToFile();
+            }
         }
     }
 }

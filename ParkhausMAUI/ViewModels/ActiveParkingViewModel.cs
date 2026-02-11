@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using ParkhausMAUI.Models;
 using ParkhausMAUI.Services;
-using System.Collections.ObjectModel;
 
 namespace ParkhausMAUI.ViewModels
 {
@@ -26,6 +25,12 @@ namespace ParkhausMAUI.ViewModels
         [ObservableProperty]
         private bool isNotParkingActive;
 
+        [ObservableProperty]
+        private bool isPaid;
+
+        [ObservableProperty]
+        private bool isNotPaid;
+
         public ActiveParkingViewModel(ParkingService parkingService)
         {
             _parkingService = parkingService;
@@ -42,14 +47,16 @@ namespace ParkhausMAUI.ViewModels
             IsParkingActive = CurrentSession != null;
             IsNotParkingActive = !IsParkingActive;
 
-            if (IsParkingActive)
+            if (!IsPaid)
+            {
+                IsPaid = false;
+                IsNotPaid = true;
+            }
+
+            if (IsParkingActive && !IsPaid)
             {
                 _timer.Start();
                 UpdateUI();
-            }
-            else
-            {
-                _timer.Stop();
             }
         }
 
@@ -72,20 +79,32 @@ namespace ParkhausMAUI.ViewModels
         }
 
         [RelayCommand]
-        private async Task StopParking()
+        private async Task PayParking()
         {
-            bool answer = await Shell.Current.DisplayAlert("Beenden", "Möchtest du den Parkvorgang wirklich beenden?", "Ja", "Nein");
+            bool answer = await Shell.Current.DisplayAlert("Bezahlen", $"Möchten Sie den Betrag von {CurrentCosts} jetzt bezahlen?", "Ja", "Nein");
 
             if (answer)
             {
-                _timer.Stop();
-                _parkingService.StopParking();
-
-                OnAppearing();
-
-                await Shell.Current.DisplayAlert("Info", "Parkvorgang wurde im Verlauf gespeichert.", "OK");
-
+                _timer.Stop(); 
+                IsPaid = true;
+                IsNotPaid = false;
+                await Shell.Current.DisplayAlert("Erfolg", "Zahlung erfolgreich! Sie können nun ausfahren.", "OK");
             }
+        }
+
+        [RelayCommand]
+        private async Task StopParking()
+        {
+            _parkingService.StopParking();
+
+            IsPaid = false;
+            IsNotPaid = true;
+
+            OnAppearing();
+
+            await Shell.Current.DisplayAlert("Gute Fahrt", "Der Parkvorgang wurde abgeschlossen.", "OK");
+
+            await Shell.Current.GoToAsync("///HistoryPage");
         }
     }
 }
