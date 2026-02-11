@@ -28,6 +28,10 @@ namespace ParkhausMAUI
 
             builder.Services.AddTransient<ActiveParkingPage>(); // Anbindung View ActiveParkingPage
 
+            builder.Services.AddTransient<HistoryViewModel>(); // Anbindung ViewModel HistoryPage
+
+            builder.Services.AddTransient<HistoryPage>(); // Anbindung View HistoryPage
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

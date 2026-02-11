@@ -98,16 +98,32 @@ namespace ParkhausMAUI.Services
         {
             if (_data.CurrentSession == null) return;
 
-            // Session beenden
+            // Endzeit setzen
             _data.CurrentSession.EndTime = DateTime.Now;
 
-            // In den Parkverlauf verschieben
+            // Kosten berechnen
+            var duration = _data.CurrentSession.EndTime.Value - _data.CurrentSession.StartTime;
+            var parking = _data.AvailableParkings.FirstOrDefault(p => p.Name == _data.CurrentSession.ParkhausName);
+
+            if (parking != null)
+            {
+                // Stunden * Tarif
+                _data.CurrentSession.TotalCost = duration.TotalHours * parking.HourlyRate;
+            }
+
+            // Zum Verlauf hinzufügen
             _data.History.Add(_data.CurrentSession);
 
-            // Aktive Session leeren
+            // Aktuelle Session löschen
             _data.CurrentSession = null;
 
+            // im JSON speichern
             SaveToFile();
+        }
+
+        public List<ParkingSession> GetHistory()
+        {
+            return _data.History ?? new List<ParkingSession>();
         }
     }
 }
