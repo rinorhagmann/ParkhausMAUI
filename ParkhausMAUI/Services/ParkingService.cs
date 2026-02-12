@@ -5,7 +5,7 @@ namespace ParkhausMAUI.Services
 {
     public class ParkingService
     {
-        private readonly string _filePath = Path.Combine(FileSystem.AppDataDirectory, "parking_basel_v4.json");
+        private readonly string _filePath = Path.Combine(FileSystem.AppDataDirectory, "parking_basel.json");
         private RootData _data;
 
         public ParkingService()
@@ -19,30 +19,28 @@ namespace ParkhausMAUI.Services
             {
                 if (!File.Exists(_filePath))
                 {
-                    // JSON-Daten mit 18 Basler Parkhäusern
                     _data = new RootData
                     {
                         AvailableParkings = new List<ParkingLocation>
                         {
-                            new() { Id = 1, Name = "Parkhaus Centralbahn", HourlyRate = 4.00 },
-                            new() { Id = 2, Name = "Parkhaus Elisabethen", HourlyRate = 3.00 },
-                            new() { Id = 3, Name = "Parkhaus Steinen", HourlyRate = 3.00 },
-                            new() { Id = 4, Name = "Parkhaus City", HourlyRate = 3.00 },
-                            new() { Id = 5, Name = "Parkhaus Storchen", HourlyRate = 4.50 },
-                            new() { Id = 6, Name = "Parkhaus Bad. Bahnhof", HourlyRate = 2.50 },
-                            new() { Id = 7, Name = "Parkhaus Messe Basel", HourlyRate = 3.50 },
-                            new() { Id = 8, Name = "Parkhaus Rebgasse", HourlyRate = 2.50 },
-                            new() { Id = 9, Name = "Parkhaus Claramatte", HourlyRate = 2.50 },
-                            new() { Id = 10, Name = "Parkhaus Europe", HourlyRate = 3.50 },
-                            new() { Id = 11, Name = "Parkhaus Post Basel", HourlyRate = 3.50 },
-                            new() { Id = 12, Name = "Parkhaus Anfos", HourlyRate = 3.50 },
-                            new() { Id = 13, Name = "Parkhaus Aeschen", HourlyRate = 3.50 },
-                            new() { Id = 14, Name = "Parkhaus Bahnhof Süd", HourlyRate = 3.50 },
-                            new() { Id = 15, Name = "Parkhaus St. Jakob", HourlyRate = 2.00 },
-                            new() { Id = 16, Name = "Parkhaus Clarahuus", HourlyRate = 3.00 },
-                            new() { Id = 17, Name = "Parkhaus Universitätsspital (UKBB)", HourlyRate = 3.00 }
-                        },
-                        History = new List<ParkingSession>()
+                            new() { Id = 1, Name = "Parkhaus Centralbahn", HourlyRate = 4.00, TotalSpaces = 500, OccupiedSpaces = 485 },
+                            new() { Id = 2, Name = "Parkhaus Elisabethen", HourlyRate = 3.00, TotalSpaces = 800, OccupiedSpaces = 800 }, // VOLL
+                            new() { Id = 3, Name = "Parkhaus Steinen", HourlyRate = 3.00, TotalSpaces = 650, OccupiedSpaces = 120 },
+                            new() { Id = 4, Name = "Parkhaus City", HourlyRate = 3.00, TotalSpaces = 400, OccupiedSpaces = 399 },
+                            new() { Id = 5, Name = "Parkhaus Storchen", HourlyRate = 4.50, TotalSpaces = 250, OccupiedSpaces = 250 }, // VOLL
+                            new() { Id = 6, Name = "Parkhaus Bad. Bahnhof", HourlyRate = 2.50, TotalSpaces = 300, OccupiedSpaces = 45 },
+                            new() { Id = 7, Name = "Parkhaus Messe Basel", HourlyRate = 3.50, TotalSpaces = 1200, OccupiedSpaces = 1150 },
+                            new() { Id = 8, Name = "Parkhaus Rebgasse", HourlyRate = 2.50, TotalSpaces = 200, OccupiedSpaces = 200 }, // VOLL
+                            new() { Id = 9, Name = "Parkhaus Claramatte", HourlyRate = 2.50, TotalSpaces = 150, OccupiedSpaces = 10 },
+                            new() { Id = 10, Name = "Parkhaus Europe", HourlyRate = 3.50, TotalSpaces = 350, OccupiedSpaces = 350 }, // VOLL
+                            new() { Id = 11, Name = "Parkhaus Post Basel", HourlyRate = 3.50, TotalSpaces = 220, OccupiedSpaces = 180 },
+                            new() { Id = 12, Name = "Parkhaus Anfos", HourlyRate = 3.50, TotalSpaces = 450, OccupiedSpaces = 445 },
+                            new() { Id = 13, Name = "Parkhaus Aeschen", HourlyRate = 3.50, TotalSpaces = 380, OccupiedSpaces = 380 }, // VOLL
+                            new() { Id = 14, Name = "Parkhaus Bahnhof Süd", HourlyRate = 3.50, TotalSpaces = 550, OccupiedSpaces = 540 },
+                            new() { Id = 15, Name = "Parkhaus St. Jakob", HourlyRate = 2.00, TotalSpaces = 1000, OccupiedSpaces = 200 },
+                            new() { Id = 16, Name = "Parkhaus Clarahuus", HourlyRate = 3.00, TotalSpaces = 180, OccupiedSpaces = 180 }, // VOLL
+                            new() { Id = 17, Name = "Parkhaus Universitätsspital", HourlyRate = 3.00, TotalSpaces = 600, OccupiedSpaces = 580 }
+                        }
                     };
                     SaveToFile();
                 }
@@ -52,10 +50,9 @@ namespace ParkhausMAUI.Services
                     _data = JsonSerializer.Deserialize<RootData>(json) ?? new RootData();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _data = new RootData();
-                System.Diagnostics.Debug.WriteLine($"Fehler beim Laden: {ex.Message}");
             }
         }
 
@@ -66,15 +63,10 @@ namespace ParkhausMAUI.Services
         }
 
         public List<ParkingLocation> GetAvailableParkings() => _data.AvailableParkings;
-
-        public ParkingSession GetActiveSession()
-        {
-            return _data.CurrentSession;
-        }
+        public ParkingSession GetActiveSession() => _data.CurrentSession;
 
         public void StartParking(ParkingLocation location)
         {
-            // Session starten
             _data.CurrentSession = new ParkingSession
             {
                 ParkhausName = location.Name,
@@ -82,40 +74,24 @@ namespace ParkhausMAUI.Services
                 EndTime = null,
                 TotalCost = 0
             };
-
             SaveToFile();
         }
 
         public void StopParking()
         {
             if (_data.CurrentSession == null) return;
-
-            // Endzeit setzen
             _data.CurrentSession.EndTime = DateTime.Now;
-
-            // Kosten berechnen
             var duration = _data.CurrentSession.EndTime.Value - _data.CurrentSession.StartTime;
             var parking = _data.AvailableParkings.FirstOrDefault(p => p.Name == _data.CurrentSession.ParkhausName);
 
             if (parking != null)
-            {
-                // Stunden * Tarif
                 _data.CurrentSession.TotalCost = duration.TotalHours * parking.HourlyRate;
-            }
 
-            // Zum Verlauf hinzufügen
             _data.History.Add(_data.CurrentSession);
-
-            // Aktuelle Session löschen
             _data.CurrentSession = null;
-
-            // im JSON speichern
             SaveToFile();
         }
 
-        public List<ParkingSession> GetHistory()
-        {
-            return _data.History ?? new List<ParkingSession>();
-        }
+        public List<ParkingSession> GetHistory() => _data.History ?? new List<ParkingSession>();
     }
 }

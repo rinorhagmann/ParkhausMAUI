@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:ParkhausMAUI.ViewModels"
              xmlns:models="clr-namespace:ParkhausMAUI.Models"
              x:Class="ParkhausMAUI.Views.MainPage"
+             x:DataType="viewmodel:MainViewModel"
              Title="Parkhäuser">
 
     <Grid RowDefinitions="Auto, *">
@@ -19,23 +20,30 @@
                 <DataTemplate x:DataType="models:ParkingLocation">
                     <Frame Margin="5" Padding="15" BorderColor="#E0E0E0" CornerRadius="12" HasShadow="True">
                         <Grid ColumnDefinitions="50, *, Auto">
-                            <Label Grid.ColumnSpan="1" Text="🅿️" FontSize="30" VerticalOptions="Center"/>
+                            <Label Text="🅿️" FontSize="30" VerticalOptions="Center"/>
 
                             <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Margin="10,0">
-                                <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="18"/>
-                                <Label Text="Verfügbar" FontSize="12" TextColor="Green"/>
+                                <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="17"/>
+                                <HorizontalStackLayout Spacing="5">
+                                    <Label Text="{Binding OccupancyText}" 
+                                           FontSize="13" 
+                                           TextColor="{Binding OccupancyColor}" 
+                                           FontAttributes="Bold"/>
+                                    <Label Text="{Binding TotalSpaces, StringFormat='(Gesamt: {0})'}" 
+                                           FontSize="11" TextColor="Gray" VerticalOptions="Center"/>
+                                </HorizontalStackLayout>
                             </VerticalStackLayout>
 
                             <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
                                 <Label Text="{Binding HourlyRate, StringFormat='CHF {0:F2}'}" 
                                        TextColor="{StaticResource Primary}" 
                                        FontAttributes="Bold" HorizontalOptions="End"/>
-                                <Label Text="pro Stunde" FontSize="10" HorizontalOptions="End"/>
 
                                 <Button Text="Starten" 
-                                        Scale="0.8"
+                                        Scale="0.85"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectParkingCommand}"
                                         CommandParameter="{Binding .}"
+                                        IsEnabled="{Binding HasFreeSpaces}"
                                         Margin="0,5,0,0"/>
                             </VerticalStackLayout>
                         </Grid>

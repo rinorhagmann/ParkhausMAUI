@@ -34,7 +34,7 @@ namespace ParkhausMAUI.ViewModels
             // Bestätigungsanforderung
             bool confirm = await Shell.Current.DisplayAlert(
                 "Löschen bestätigen",
-                $"Möchtest du den Parkvorgang im {session.ParkhausName} wirklich aus dem Verlauf entfernen?",
+                $"Möchten Sie den Parkvorgang im {session.ParkhausName} wirklich aus dem Verlauf entfernen?",
                 "Löschen",
                 "Abbrechen");
 
