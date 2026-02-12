@@ -6,7 +6,7 @@
              x:Class="ParkhausMAUI.Views.HistoryPage"
              x:DataType="viewmodel:HistoryViewModel"
              Title="Verlauf">
-
+    <!-- Verlauf der Parkvorgänge -->
     <Grid Margin="10">
         <CollectionView ItemsSource="{Binding HistoryItems}"
                         EmptyView="Noch keine Parkvorgänge gespeichert.">

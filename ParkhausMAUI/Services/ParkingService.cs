@@ -5,19 +5,20 @@ namespace ParkhausMAUI.Services
 {
     public class ParkingService
     {
-        private readonly string _filePath = Path.Combine(FileSystem.AppDataDirectory, "parking_basel.json");
-        private RootData _data;
+        private readonly string _filePath = Path.Combine(FileSystem.AppDataDirectory, "parkhaeuser_basel.json"); // Speicherort der JSON-Datei
+        private RootData _data; 
 
         public ParkingService()
         {
             InitializeData();
         }
 
+        // Liste an 17 Basler Parkhäsern mit Preis und Belegung, sowie max. Anzahl Plätze
         private void InitializeData()
         {
             try
             {
-                if (!File.Exists(_filePath))
+                if (!File.Exists(_filePath)) // Wird neu erstellt, wenn nicht vorhanden
                 {
                     _data = new RootData
                     {
@@ -26,7 +27,7 @@ namespace ParkhausMAUI.Services
                             new() { Id = 1, Name = "Parkhaus Centralbahn", HourlyRate = 4.00, TotalSpaces = 500, OccupiedSpaces = 485 },
                             new() { Id = 2, Name = "Parkhaus Elisabethen", HourlyRate = 3.00, TotalSpaces = 800, OccupiedSpaces = 800 }, // VOLL
                             new() { Id = 3, Name = "Parkhaus Steinen", HourlyRate = 3.00, TotalSpaces = 650, OccupiedSpaces = 120 },
-                            new() { Id = 4, Name = "Parkhaus City", HourlyRate = 3.00, TotalSpaces = 400, OccupiedSpaces = 399 },
+                            new() { Id = 4, Name = "Parkhaus City", HourlyRate = 3.00, TotalSpaces = 400, OccupiedSpaces = 398 },
                             new() { Id = 5, Name = "Parkhaus Storchen", HourlyRate = 4.50, TotalSpaces = 250, OccupiedSpaces = 250 }, // VOLL
                             new() { Id = 6, Name = "Parkhaus Bad. Bahnhof", HourlyRate = 2.50, TotalSpaces = 300, OccupiedSpaces = 45 },
                             new() { Id = 7, Name = "Parkhaus Messe Basel", HourlyRate = 3.50, TotalSpaces = 1200, OccupiedSpaces = 1150 },
@@ -42,29 +43,30 @@ namespace ParkhausMAUI.Services
                             new() { Id = 17, Name = "Parkhaus Universitätsspital", HourlyRate = 3.00, TotalSpaces = 600, OccupiedSpaces = 580 }
                         }
                     };
-                    SaveToFile();
+                    SaveToFile(); // Speichern
                 }
                 else
                 {
-                    var json = File.ReadAllText(_filePath);
-                    _data = JsonSerializer.Deserialize<RootData>(json) ?? new RootData();
+                    var json = File.ReadAllText(_filePath); 
+                    _data = JsonSerializer.Deserialize<RootData>(json) ?? new RootData(); 
                 }
             }
             catch (Exception)
             {
-                _data = new RootData();
+                _data = new RootData(); 
             }
         }
 
-        public void SaveToFile()
+        public void SaveToFile() 
         {
-            var json = JsonSerializer.Serialize(_data, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(_filePath, json);
+            var json = JsonSerializer.Serialize(_data, new JsonSerializerOptions { WriteIndented = true }); 
+            File.WriteAllText(_filePath, json); 
         }
 
-        public List<ParkingLocation> GetAvailableParkings() => _data.AvailableParkings;
-        public ParkingSession GetActiveSession() => _data.CurrentSession;
+        public List<ParkingLocation> GetAvailableParkings() => _data.AvailableParkings; // Liste verfügbare Parkhäuser
+        public ParkingSession GetActiveSession() => _data.CurrentSession; // Aktueller Parkvorgang
 
+        // Startet einen neuen Parkvorgang mit aktuellem Zeitpunkt
         public void StartParking(ParkingLocation location)
         {
             _data.CurrentSession = new ParkingSession
@@ -77,21 +79,22 @@ namespace ParkhausMAUI.Services
             SaveToFile();
         }
 
+        // Beendet den aktuellen Parkvorgang, berechnet die Kosten und speichert den Vorgang im Verlauf
         public void StopParking()
         {
             if (_data.CurrentSession == null) return;
             _data.CurrentSession.EndTime = DateTime.Now;
-            var duration = _data.CurrentSession.EndTime.Value - _data.CurrentSession.StartTime;
-            var parking = _data.AvailableParkings.FirstOrDefault(p => p.Name == _data.CurrentSession.ParkhausName);
+            var duration = _data.CurrentSession.EndTime.Value - _data.CurrentSession.StartTime; // Berechnung der Dauer
+            var parking = _data.AvailableParkings.FirstOrDefault(p => p.Name == _data.CurrentSession.ParkhausName); 
 
             if (parking != null)
-                _data.CurrentSession.TotalCost = duration.TotalHours * parking.HourlyRate;
+                _data.CurrentSession.TotalCost = duration.TotalHours * parking.HourlyRate; // Berechnung der Kosten
 
-            _data.History.Add(_data.CurrentSession);
+            _data.History.Add(_data.CurrentSession); // Hinzufügen zum Verlauf
             _data.CurrentSession = null;
             SaveToFile();
         }
 
-        public List<ParkingSession> GetHistory() => _data.History ?? new List<ParkingSession>();
+        public List<ParkingSession> GetHistory() => _data.History ?? new List<ParkingSession>(); 
     }
 }

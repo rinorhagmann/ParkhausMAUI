@@ -10,7 +10,7 @@ namespace ParkhausMAUI.ViewModels
         private readonly ParkingService _parkingService;
         private IDispatcherTimer _timer;
 
-        [ObservableProperty]
+        [ObservableProperty] 
         private ParkingSession currentSession;
 
         [ObservableProperty]
@@ -35,25 +35,25 @@ namespace ParkhausMAUI.ViewModels
         {
             _parkingService = parkingService;
 
-            _timer = Application.Current.Dispatcher.CreateTimer();
-            _timer.Interval = TimeSpan.FromSeconds(1);
-            _timer.Tick += (s, e) => UpdateUI();
+            _timer = Application.Current.Dispatcher.CreateTimer(); // Timer
+            _timer.Interval = TimeSpan.FromSeconds(1); // Aktualisierung alle 1 Sekunde
+            _timer.Tick += (s, e) => UpdateUI(); 
         }
 
-        public void OnAppearing()
+        public void OnAppearing() // Wird aufgerufen, wenn die Seite erscheint
         {
-            CurrentSession = _parkingService.GetActiveSession();
+            CurrentSession = _parkingService.GetActiveSession(); 
 
-            IsParkingActive = CurrentSession != null;
-            IsNotParkingActive = !IsParkingActive;
+            IsParkingActive = CurrentSession != null; // Überprüfen, ob ein Parkvorgang aktiv ist
+            IsNotParkingActive = !IsParkingActive; 
 
-            if (!IsPaid)
+            if (!IsPaid) // Überprüfen, ob bereits bezahlt wurde
             {
                 IsPaid = false;
                 IsNotPaid = true;
             }
 
-            if (IsParkingActive && !IsPaid)
+            if (IsParkingActive && !IsPaid) // Wenn Parkvorgang aktiv und nicht bezahlt, Timer starten
             {
                 _timer.Start();
                 UpdateUI();
@@ -64,22 +64,22 @@ namespace ParkhausMAUI.ViewModels
         {
             if (CurrentSession == null) return;
 
-            var duration = DateTime.Now - CurrentSession.StartTime;
-            ElapsedTime = $"{duration.Hours:D2}:{duration.Minutes:D2}:{duration.Seconds:D2}";
+            var duration = DateTime.Now - CurrentSession.StartTime; // Berechnung der Parkdauer
+            ElapsedTime = $"{duration.Hours:D2}:{duration.Minutes:D2}:{duration.Seconds:D2}"; // Formatierung der Parkdauer
 
             var parking = _parkingService.GetAvailableParkings()
-                          .FirstOrDefault(p => p.Name == CurrentSession.ParkhausName);
+                          .FirstOrDefault(p => p.Name == CurrentSession.ParkhausName); // Abrufen Parkhausdaten
 
             if (parking != null)
             {
                 double totalHours = duration.TotalHours;
-                double costs = totalHours * parking.HourlyRate;
-                CurrentCosts = $"CHF {costs:F2}";
+                double costs = totalHours * parking.HourlyRate; // Berechnung der Kosten
+                CurrentCosts = $"CHF {costs:F2}"; // Formatierung der Kosten
             }
         }
 
         [RelayCommand]
-        private async Task PayParking()
+        private async Task PayParking() // Bezahlen des Parkvorgangs
         {
             bool answer = await Shell.Current.DisplayAlert("Bezahlen", $"Möchten Sie den Betrag von {CurrentCosts} jetzt bezahlen?", "Ja", "Nein");
 
@@ -93,7 +93,7 @@ namespace ParkhausMAUI.ViewModels
         }
 
         [RelayCommand]
-        private async Task StopParking()
+        private async Task StopParking() // Beenden des Parkvorgangs
         {
             _parkingService.StopParking();
 

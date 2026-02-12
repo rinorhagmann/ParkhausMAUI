@@ -23,11 +23,11 @@ namespace ParkhausMAUI.ViewModels
         {
             // Liste beim Öffnen der Seite aktualisieren
             var items = _parkingService.GetHistory();
-            HistoryItems = new ObservableCollection<ParkingSession>(items.OrderByDescending(x => x.StartTime));
+            HistoryItems = new ObservableCollection<ParkingSession>(items.OrderByDescending(x => x.StartTime)); // Geordnet nach Startzeit
         }
 
         [RelayCommand]
-        private async Task DeleteEntry(ParkingSession session)
+        private async Task DeleteEntry(ParkingSession session) // Eintrag löschen
         {
             if (session == null) return;
 
@@ -40,7 +40,7 @@ namespace ParkhausMAUI.ViewModels
 
             if (confirm)
             {
-                HistoryItems.Remove(session);
+                HistoryItems.Remove(session); // Löschen
 
                 _parkingService.GetHistory().Remove(session);
 

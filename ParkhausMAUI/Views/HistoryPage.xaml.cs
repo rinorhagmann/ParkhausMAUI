@@ -5,7 +5,7 @@ public partial class HistoryPage : ContentPage
     public HistoryPage(ViewModels.HistoryViewModel vm)
     {
         InitializeComponent();
-        BindingContext = vm;
+        BindingContext = vm; // Anbindung des Viewmodels an die View
     }
 
     protected override void OnAppearing()

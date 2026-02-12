@@ -14,7 +14,7 @@ namespace ParkhausMAUI
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"); // Schriftart
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
@@ -33,10 +33,10 @@ namespace ParkhausMAUI
             builder.Services.AddTransient<HistoryPage>(); // Anbindung View HistoryPage
 
 #if DEBUG
-            builder.Logging.AddDebug();
+            builder.Logging.AddDebug(); // Debugging
 #endif
 
-            return builder.Build();
+            return builder.Build(); // Build der App
         }
     }
 }

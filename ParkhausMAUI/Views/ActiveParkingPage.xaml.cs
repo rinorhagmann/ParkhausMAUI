@@ -5,13 +5,13 @@ public partial class ActiveParkingPage : ContentPage
     public ActiveParkingPage(ViewModels.ActiveParkingViewModel vm)
     {
         InitializeComponent();
-        BindingContext = vm;
+        BindingContext = vm; // Anbindung des Viewmodels an die View
     }
 
-    protected override void OnAppearing()
+    protected override void OnAppearing() 
     {
         base.OnAppearing();
-        (BindingContext as ViewModels.ActiveParkingViewModel)?.OnAppearing();
+        (BindingContext as ViewModels.ActiveParkingViewModel)?.OnAppearing(); 
     }
 
     private async void GoToMainPage(object sender, EventArgs e)

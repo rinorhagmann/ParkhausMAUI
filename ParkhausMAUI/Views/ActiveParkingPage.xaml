@@ -8,11 +8,13 @@
 
     <VerticalStackLayout Spacing="25" Padding="30" VerticalOptions="Center">
 
+        <!-- Aktiver Parkvorgang -->
         <VerticalStackLayout IsVisible="{Binding IsParkingActive}" Spacing="15">
             <Label Text="Sie parken aktuell im:" HorizontalOptions="Center" TextColor="Gray"/>
             <Label Text="{Binding CurrentSession.ParkhausName}" 
                    FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10"/>
 
+            <!-- Kreis mit Timer -->
             <Frame BackgroundColor="#F0F0F0" CornerRadius="100" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" HasShadow="False">
                 <VerticalStackLayout VerticalOptions="Center">
                     <Label Text="{Binding ElapsedTime}" FontSize="32" FontAttributes="Bold" HorizontalOptions="Center"/>
@@ -49,6 +51,7 @@
             </VerticalStackLayout>
         </VerticalStackLayout>
 
+        <!-- Kein aktiver Parkvorgang -->
         <VerticalStackLayout IsVisible="{Binding IsNotParkingActive}" Spacing="20">
             <Label Text="ℹ️" FontSize="60" HorizontalOptions="Center"/>
             <Label Text="Aktuell ist kein Parkvorgang aktiv." HorizontalOptions="Center" FontSize="18"/>

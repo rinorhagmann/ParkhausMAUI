@@ -6,6 +6,7 @@
     xmlns:views="clr-namespace:ParkhausMAUI.Views"
     Title="ParkhausMAUI">
 
+    <!-- Navigation -->
     <TabBar>
         <Tab Title="Parkhäuser">
             <ShellContent ContentTemplate="{DataTemplate views:MainPage}" Route="MainPage" />
