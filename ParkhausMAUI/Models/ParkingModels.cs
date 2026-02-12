@@ -22,7 +22,6 @@ namespace ParkhausMAUI.Models
         public bool IsActive => EndTime == null;
     }
 
-    // RootData für JSON-Daten
     public class RootData
     {
         public List<ParkingLocation> AvailableParkings { get; set; } = new();
